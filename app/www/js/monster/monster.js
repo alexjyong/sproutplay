@@ -349,7 +349,7 @@ document.addEventListener('DOMContentLoaded', function () {
             pendingWinTimer = setTimeout(function () {
                 pendingWinTimer = null;
                 onRoundComplete();
-            }, 600);
+            }, 4000);
         }
     }
 
