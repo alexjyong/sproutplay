@@ -115,6 +115,16 @@ const AppRegistry = (function() {
       path: 'memory/index.html'
     });
 
+    register({
+      id: 'monster',
+      name: 'Feed the Monster',
+      icon: '🐲',
+      description: 'Count and feed the hungry monster!',
+      backgroundColor: 'color-6',
+      placeholder: false,
+      path: 'monster/index.html'
+    });
+
     // Register placeholder apps for future mini-apps
     register({
       id: 'space',

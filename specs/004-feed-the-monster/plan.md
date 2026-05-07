@@ -1,104 +1,108 @@
-# Implementation Plan: [FEATURE]
+# Implementation Plan: Feed the Monster Math Game
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
-
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
+**Branch**: `004-feed-the-monster` | **Date**: 2026-05-03 | **Spec**: [spec.md](spec.md)
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+A self-contained counting/arithmetic mini-app for kids ages 3–7. A cartoon monster holds a sign with a target number; the child drags emoji food items from a tray into the monster's mouth one at a time. Each item triggers a chomp animation and increments a counter. When the count matches the target, a celebration fires and the round resets. Three difficulty levels (counting 1–5, counting 1–10, addition to 10) unlock automatically after 5 consecutive wins and persist to localStorage. Built with vanilla JS following the DOMContentLoaded pattern used by all other SproutPlay mini-apps, reusing the `abc.js` drag system and `Sound.js` audio pipeline.
+
+---
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
+**Language/Version**: JavaScript ES6+ (vanilla, no transpiler)
+**Primary Dependencies**: `Sound.js` (Web Audio + TTS), `Settings.js` (global sound toggle); no new npm packages
+**Storage**: `localStorage['sproutplay_monster']` — JSON with `level` and `consecutiveWins`
+**Testing**: Manual, per `quickstart.md` scenarios
+**Target Platform**: Android 7+ via Capacitor WebView; secondary browser testing in Chrome DevTools
+**Project Type**: Mobile mini-app (Capacitor-wrapped)
+**Performance Goals**: Chomp animation + counter update perceived as instantaneous (<16ms DOM update after touchend)
+**Constraints**: Offline-only, no image files, touch targets ≥ 48px, respects global `soundEnabled` setting
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+---
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+| Principle | Status | Notes |
+|-----------|--------|-------|
+| I. Simplicity First | ✅ PASS | Vanilla JS, DOMContentLoaded pattern, no abstractions beyond what the task requires |
+| II. Kid-First Design | ✅ PASS | Items and mouth zone sized ≥ 64px; large emoji; no time pressure |
+| III. Offline-Capable | ✅ PASS | No network calls; emoji rendered from Unicode; localStorage only |
+| IV. Privacy by Default | ✅ PASS | No data collected or transmitted; localStorage key is local only |
+| V. Modular Mini-App | ✅ PASS | Self-contained under `monster/`; registered via `AppRegistry.register()`; hub has no dependency on it |
 
-[Gates determined based on constitution file]
+**Gate result: PASS — no violations.**
+
+---
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/[###-feature]/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+specs/004-feed-the-monster/
+├── plan.md           ← this file
+├── spec.md
+├── research.md
+├── data-model.md
+├── quickstart.md
+├── tasks.md
+├── checklists/
+│   └── requirements.md
+└── missing-addend/   ← sub-feature spec
+    ├── spec.md
+    ├── plan.md
+    ├── tasks.md
+    └── checklists/
+        └── requirements.md
 ```
 
-### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
+### Source Code
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
-
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+app/www/
+├── monster/
+│   └── index.html           ← new: mini-app HTML shell
+├── js/
+│   ├── monster/
+│   │   └── monster.js       ← new: all game logic
+│   ├── registry.js          ← edit: add monster registration entry
+│   └── sound.js             ← edit: add Sound.chomp() and Sound.overfed()
+└── css/
+    └── monster.css          ← new: monster + tray + celebration styles
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+---
 
-## Complexity Tracking
+## Implementation Tasks (summary — see tasks.md for full list)
 
-> **Fill ONLY if Constitution Check has violations that must be justified**
+### Phase 1: Setup
+- Create `monster/index.html`, `css/monster.css`, stub `js/monster/monster.js`
+- Add `Sound.chomp()` + `Sound.overfed()` to `sound.js`
+- Register monster in `registry.js`
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+### Phase 2: Foundational
+- `loadProgress()`, `saveProgress()`, `pickTarget()`
+- `buildItems()`, `findFreePosition()`
+- Full drag system (`startDrag`, `moveDrag`, `endDrag`, `cancelDrag`, `cleanupDrag`, `animateBack`)
+- `setMonsterState()`, `updateSign()`, `updateCounter()`, `speakPrompt()`
+
+### Phase 3: Core game loop (MVP)
+- `feedItem()`, `checkWin()` (with overfed guard)
+- `onOverfed()`, `showCelebration()`, `hideCelebration()`
+- `onRoundComplete()`, `newRound()`, `init()`
+
+### Phase 4: Level progression
+- `checkLevelUp()`, `showLevelUp()`
+
+### Phase 5: Polish
+- Sound settings integration, back button, touch target audit, full quickstart pass, APK build
+
+---
+
+## Scope boundary (explicitly out of scope)
+
+- Manual difficulty picker — progression is automatic only
+- Haptic feedback — not in the constitution-approved stack
+- Sound files or sprites — Web Audio oscillators only per constitution
+- Parental gate on level reset — not in spec

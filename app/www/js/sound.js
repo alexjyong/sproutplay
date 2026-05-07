@@ -284,6 +284,25 @@ var Sound = (function() {
   }
 
   /**
+   * Chomp sound - short rising blip when an item is fed to the monster
+   */
+  function chomp() {
+    if (!enabled) return;
+    tone(300, 60, 'square', 0.25);
+    setTimeout(function() { tone(600, 80, 'sine', 0.2); }, 60);
+  }
+
+  /**
+   * Overfed sound - descending wah (reserved for future use)
+   */
+  function overfed() {
+    if (!enabled) return;
+    tone(500, 150, 'sawtooth', 0.2);
+    setTimeout(function() { tone(350, 150, 'sawtooth', 0.2); }, 150);
+    setTimeout(function() { tone(220, 200, 'sawtooth', 0.15); }, 300);
+  }
+
+  /**
    * Enable/disable sounds
    */
   function setEnabled(value) {
@@ -300,17 +319,19 @@ var Sound = (function() {
     return enabled;
   }
 
-  return { 
-    init, 
-    flip, 
-    match, 
-    noMatch, 
-    celebrate, 
-    phonics, 
-    speak, 
-    speakWord, 
-    setEnabled, 
-    isEnabled, 
-    tone 
+  return {
+    init,
+    flip,
+    match,
+    noMatch,
+    celebrate,
+    chomp,
+    overfed,
+    phonics,
+    speak,
+    speakWord,
+    setEnabled,
+    isEnabled,
+    tone
   };
 })();
