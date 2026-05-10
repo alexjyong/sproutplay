@@ -110,20 +110,19 @@ document.addEventListener('DOMContentLoaded', function () {
         var trayRect = itemTray.getBoundingClientRect();
         var placed = [];
 
-        var extras = 2 + Math.floor(Math.random() * 3); // 2–4 wrong-food decoys
+        var extras = 2 + Math.floor(Math.random() * 2); // 2–3 wrong-food decoys
 
-        for (var i = 0; i < round.target; i++) {
-            spawnItem(round.foodEmoji, true, trayRect, placed);
-        }
-        for (var j = 0; j < extras; j++) {
-            spawnItem(pickWrongEmoji(), false, trayRect, placed);
+        // Interleave correct and wrong items randomly so tray looks mixed
+        var slots = [];
+        for (var i = 0; i < round.target; i++) slots.push(true);
+        for (var j = 0; j < extras; j++) slots.push(false);
+        for (var s = slots.length - 1; s > 0; s--) {
+            var t = Math.floor(Math.random() * (s + 1));
+            var tmp = slots[s]; slots[s] = slots[t]; slots[t] = tmp;
         }
 
-        // Shuffle DOM order so correct items aren't always first
-        for (var k = items.length - 1; k > 0; k--) {
-            var r = Math.floor(Math.random() * (k + 1));
-            itemTray.appendChild(items[r].el);
-            var tmp = items[k]; items[k] = items[r]; items[r] = tmp;
+        for (var k = 0; k < slots.length; k++) {
+            spawnItem(slots[k] ? round.foodEmoji : pickWrongEmoji(), slots[k], trayRect, placed);
         }
     }
 
@@ -172,8 +171,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!overlap) return { x: x, y: y };
         }
 
-        // Fallback: stack with slight offset
-        return { x: padding + (placed.length * 10) % maxX, y: padding };
+        // Fallback: wrap into a grid so items never pile on each other
+        var cols = Math.floor((trayRect.width - padding) / (tileW + padding)) || 1;
+        var col  = placed.length % cols;
+        var row  = Math.floor(placed.length / cols);
+        return { x: padding + col * (tileW + padding), y: padding + row * (tileH + padding) };
     }
 
     // ── Pre-fed items (missing addend) ──────────────────────────
