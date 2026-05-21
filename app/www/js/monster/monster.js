@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     var LEVEL3_PAIRS = [
-        [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 9],
-        [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 8],
-        [3, 3], [3, 4], [3, 5], [3, 6], [3, 7],
-        [4, 4], [4, 5], [4, 6], [5, 5]
+        [1, 1], [1, 2], [1, 3], [1, 4], [1, 5],
+        [2, 2], [2, 3], [2, 4], [2, 5],
+        [3, 3], [3, 4], [3, 5],
+        [4, 4], [4, 5], [5, 5]
     ];
 
     var WIN_THRESHOLD = 5;
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
             displayA = null;
             displayB = null;
         } else if (level === 2) {
-            target = 1 + Math.floor(Math.random() * 10); // 1–10
+            target = 1 + Math.floor(Math.random() * 7); // 1–7
             displayA = null;
             displayB = null;
         } else {
@@ -176,24 +176,6 @@ document.addEventListener('DOMContentLoaded', function () {
         var col  = placed.length % cols;
         var row  = Math.floor(placed.length / cols);
         return { x: padding + col * (tileW + padding), y: padding + row * (tileH + padding) };
-    }
-
-    // ── Pre-fed items (missing addend) ──────────────────────────
-
-    function clearPreFedItems() {
-        document.getElementById('pre-fed-zone').innerHTML = '';
-    }
-
-    function buildPreFedItems() {
-        clearPreFedItems();
-        if (level !== 3 || round.displayA === null) return;
-        var zone = document.getElementById('pre-fed-zone');
-        for (var i = 0; i < round.displayA; i++) {
-            var el = document.createElement('div');
-            el.className = 'pre-fed-item';
-            el.textContent = round.foodEmoji;
-            zone.appendChild(el);
-        }
     }
 
     // ── Monster state (T010) ─────────────────────────────────────
@@ -328,6 +310,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function feedItem(item) {
         if (!item.correct) {
             animateBack(item);
+            monsterContainer.classList.add('yuck');
+            setTimeout(function () { monsterContainer.classList.remove('yuck'); }, 500);
             if (typeof Sound !== 'undefined') {
                 Sound.overfed();
                 Sound.speak('Yuck! The monster wants ' + round.foodName + '!');
@@ -351,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
             pendingWinTimer = setTimeout(function () {
                 pendingWinTimer = null;
                 onRoundComplete();
-            }, 4000);
+            }, 600);
         }
     }
 
@@ -436,8 +420,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateSign();
         updateCounter();
         levelBadge.textContent = 'Level ' + level;
-        clearPreFedItems();
-        buildPreFedItems();
         buildItems();
         setTimeout(speakPrompt, 300);
     }
@@ -458,6 +440,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('levelup-continue-btn').addEventListener('click', function () {
             hideCelebration();
             newRound();
+        });
+        document.getElementById('speak-btn').addEventListener('click', function () {
+            if (!celebrating) speakPrompt();
         });
 
         if (typeof Sound !== 'undefined') {

@@ -63,6 +63,14 @@
   user-select: none;
 }
 
+.sign-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  max-width: 95%;
+}
+
 .monster-sign {
   background: #fff;
   color: #333;
@@ -73,34 +81,25 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
   line-height: 1.2;
-  margin-bottom: 10px;
   min-width: 80px;
-  max-width: 90%;
+  flex: 1;
 }
 
-#pre-fed-zone {
-  position: absolute;
-  bottom: 72px;
-  left: 50%;
-  transform: translateX(-50%);
+.speak-btn {
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 22px;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   display: flex;
-  gap: 4px;
+  align-items: center;
   justify-content: center;
 }
 
-.pre-fed-item {
-  width: 36px;
-  height: 36px;
-  font-size: 24px;
-  line-height: 36px;
-  text-align: center;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.08);
-  filter: grayscale(1) opacity(0.5);
-  user-select: none;
-  touch-action: none;
-  pointer-events: none;
-}
 
 #monster-mouth {
   position: absolute;
@@ -135,6 +134,10 @@
 
 #monster-container.overfed .monster-face {
   animation: shake 0.4s ease 2;
+}
+
+#monster-container.yuck .monster-face {
+  animation: shake 0.25s ease 1;
 }
 
 @keyframes shake {
