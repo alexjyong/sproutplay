@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi">
+  <link rel="stylesheet" href="../css/monster.css">
+  <title>SproutPlay - Feed the Monster!</title>
+</head>
+<body>
+  <div class="app-container">
+    <header class="monster-header">
+      <button id="monster-back" class="back-button" aria-label="Back to hub">← Back</button>
+      <div id="level-badge" class="level-badge">Level 1</div>
+    </header>
+
+    <div class="game-area">
+      <div class="sign-row">
+        <div id="monster-sign" class="monster-sign">?</div>
+        <button id="speak-btn" class="speak-btn" aria-label="Hear again">🔊</button>
+      </div>
+      <div id="monster-container" class="idle">
+        <span class="monster-face">🐲</span>
+        <div id="monster-mouth"></div>
+      </div>
+      <div id="feed-counter" class="feed-counter">0</div>
+    </div>
+
+    <div id="item-tray" class="item-tray">
+      <!-- food items injected by JS -->
+    </div>
+
+    <div id="celebration" class="celebration-overlay" style="display:none">
+      <div class="celebration-card">
+        <div class="celebration-emoji">🎉</div>
+        <h2 id="celebration-msg">You did it!</h2>
+        <button id="play-again-btn" class="play-again-button">Play Again 🎮</button>
+        <button id="celebration-back" class="play-again-button secondary">Back to Hub</button>
+      </div>
+    </div>
+
+    <div id="levelup-overlay" class="celebration-overlay" style="display:none">
+      <div class="celebration-card">
+        <div class="celebration-emoji">⭐</div>
+        <h2>Level Up!</h2>
+        <p id="levelup-msg">You unlocked Level 2!</p>
+        <button id="levelup-continue-btn" class="play-again-button">Keep Going! 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/sound.js"></script>
+  <script src="../js/monster/monster.js"></script>
+</body>
+</html>
