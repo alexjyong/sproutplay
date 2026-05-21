@@ -21,6 +21,9 @@ A word-building game where kids drag scattered letter tiles into slots to spell 
 ### 🚀 Space Hero
 A breakout-style brick breaker with a paddle, ball, and colored blocks. Features ⭐ repair star powerups that restore lost hearts, a Zelda-style heart HUD (3 lives), and increasing difficulty with strong blocks that take two hits.
 
+### 🐲 Feed the Monster
+A drag-and-drop math game with three difficulty levels. A hungry monster displays a target number on its sign and speaks it aloud — kids drag the right amount of food into its mouth. Wrong food bounces back with a "Yuck!" shake. Level 1 targets 1–5, Level 2 targets 1–7, Level 3 is missing-addend mode ("3 + ? = 5 🍇") where some items are already eaten and the child feeds only the remainder. Win five rounds in a row to level up; progress persists across sessions.
+
 ### 🏠 Hub
 The main menu is a colorful grid of app icons. Tap one to launch that mini-app. Hit the back button to return. A ⚙️ Settings button in the top-right corner has toggles for sound effects and a parental gate option (framework is in place, challenge to be implemented).
 
@@ -88,7 +91,7 @@ sproutplay/
 ├── app/
 │   ├── www/              # Frontend assets
 │   │   ├── js/           # Shared modules (router, hub, sound, settings)
-│   │   ├── js/<game>/    # Per-game logic (paint, memory, abc, space)
+│   │   ├── js/<game>/    # Per-game logic (paint, memory, abc, space, monster)
 │   │   ├── css/          # Per-app stylesheets
 │   │   ├── sounds/       # Phonics MP3s (A–Z)
 │   │   └── index.html    # Hub launcher
