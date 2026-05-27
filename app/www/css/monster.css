@@ -18,15 +18,13 @@
   flex-shrink: 0;
 }
 
+/* mini-app override — monster header is flexbox; reset position:absolute from base.css */
 .back-button {
+  position: static;
   padding: 10px 18px;
   font-size: 18px;
-  border: none;
   border-radius: 12px;
   background: rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  min-width: 48px;
-  min-height: 48px;
 }
 
 .level-badge {
@@ -188,6 +186,7 @@
 }
 
 /* ===== Celebration Overlay ===== */
+/* mini-app override — monster-specific celebration styling (not in base.css) */
 
 .celebration-overlay {
   position: fixed;

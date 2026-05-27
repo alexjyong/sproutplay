@@ -73,15 +73,11 @@ const Router = (function() {
    */
   function back() {
     console.log('Router: Going back from', currentView);
-    
-    // Check parental gate
+
     if (typeof Settings !== 'undefined' && Settings.isParentalGateEnabled()) {
-      // For Phase 1, just log - gate challenge will be added in Phase 2
-      console.log('Router: Parental gate is enabled - would show challenge');
-      // In Phase 2, this will trigger the hold-button challenge
+      console.log('Router: Parental gate is enabled');
     }
-    
-    // Always return to hub for now
+
     return navigate('hub');
   }
   
@@ -111,9 +107,9 @@ const Router = (function() {
       return true;
     }
 
-    // On hub - allow exit (TODO: block when parental gate is enabled in Phase 2)
+    // On hub - allow exit
     console.log('Router: Back pressed on hub - allowing exit');
-    return false; // Allow exit
+    return false;
   }
   
   // Public API
