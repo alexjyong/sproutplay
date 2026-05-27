@@ -130,7 +130,7 @@
 }
 
 /* mini-app override — space header is CSS grid; reset position:absolute from base.css */
-.back-button {
+.space-header .back-button {
     position: static;
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(0, 242, 255, 0.5);

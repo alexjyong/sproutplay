@@ -23,8 +23,6 @@ const Router = (function() {
     if (!views.hub) {
       console.error('Router: Hub view not found');
     }
-    
-    console.log('Router: Initialized');
   }
   
   /**
@@ -37,8 +35,6 @@ const Router = (function() {
       console.error('Router: View not found:', viewName);
       return false;
     }
-    
-    console.log('Router: Navigating to', viewName, data);
     
     // Hide all views
     Object.values(views).forEach(view => {
@@ -72,12 +68,9 @@ const Router = (function() {
    * @returns {boolean} True if navigation succeeded
    */
   function back() {
-    console.log('Router: Going back from', currentView);
-
     if (typeof Settings !== 'undefined' && Settings.isParentalGateEnabled()) {
-      console.log('Router: Parental gate is enabled');
+      // Parental gate is enabled — gate UI not yet built; fall through to hub for now
     }
-
     return navigate('hub');
   }
   
@@ -108,7 +101,6 @@ const Router = (function() {
     }
 
     // On hub - allow exit
-    console.log('Router: Back pressed on hub - allowing exit');
     return false;
   }
   
