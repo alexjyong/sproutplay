@@ -80,6 +80,10 @@
     cursor: pointer;
     box-shadow: 0 3px 0 #3DBDB5;
     transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .restart-button:active {
