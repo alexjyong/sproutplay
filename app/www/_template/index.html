@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  SPROUTPLAY MINI-APP TEMPLATE
+  ============================================================
+  HOW TO USE:
+    1. Copy this entire _template/ folder to app/www/<your-app>/
+    2. Rename _template.css  → css/<your-app>.css
+    3. Rename js/_template.js → js/<your-app>/<your-app>.js
+    4. Find every TODO below and fill it in
+    5. Register the app in js/registry.js (see bottom of that file)
+    6. Run: npx cap sync android && ./build.sh
+
+  DO NOT load this page as a real mini-app — it's a dev template only.
+  ============================================================
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="color-scheme" content="light dark">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+    <!-- base.css MUST come first — provides shared button, back-button, and layout resets -->
+    <link rel="stylesheet" href="../css/base.css" type="text/css" media="screen">
+
+    <!-- TODO: change href to ../css/<your-app>.css -->
+    <link rel="stylesheet" href="../css/_template.css" type="text/css" media="screen">
+
+    <!-- TODO: update title -->
+    <title>SproutPlay - My App!</title>
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- ── Header ── -->
+        <!--
+          The header uses flexbox so the back button stays in normal flow.
+          base.css sets position:absolute on .back-button — the mini-app CSS
+          MUST override this with position:static when using flex/grid headers.
+          See _template.css for the required override.
+        -->
+        <!-- TODO: update class names (e.g. memory-header, abc-header) -->
+        <header class="myapp-header">
+            <!-- TODO: update id (e.g. memory-back, abc-back) -->
+            <button id="myapp-back" class="back-button" aria-label="Back to hub">← Back</button>
+            <!-- TODO: update class and title text -->
+            <h1 class="myapp-title">My App</h1>
+        </header>
+
+        <!-- ── Main game/activity area ── -->
+        <!-- TODO: replace with your game's HTML -->
+        <div id="game-area" class="game-area">
+            <!-- Content injected by JS or static markup -->
+        </div>
+
+        <!-- ── Celebration overlay ── -->
+        <!--
+          All mini-apps use this pattern. The styles live in your mini-app CSS,
+          not in base.css — you control the theming here.
+          JS shows it with: document.getElementById('celebration').style.display = 'flex';
+        -->
+        <div id="celebration" class="celebration-overlay" style="display:none">
+            <div class="celebration-card">
+                <div class="celebration-emoji">🎉</div>
+                <!-- TODO: update h2 and p text, or set them dynamically from JS -->
+                <h2 id="celebration-title">You did it!</h2>
+                <p id="celebration-msg">Great job!</p>
+                <button id="play-again-btn" class="play-again-button">Play Again 🎮</button>
+                <button id="celebration-back" class="play-again-button secondary">Back to Hub</button>
+            </div>
+        </div>
+
+    </div><!-- /.app-container -->
+
+    <!--
+      Script load order matters — do not rearrange:
+        1. sound.js       — shared Sound module (Web Audio + TTS + NativeAudio phonics)
+        2. mini-app-back  — registers Android hardware back button → hub navigation
+        3. your app JS    — runs last, after all dependencies are ready
+    -->
+    <script src="../js/sound.js"></script>
+    <script src="../js/mini-app-back.js"></script>
+    <!-- TODO: update src to ../js/<your-app>/<your-app>.js -->
+    <script src="../js/_template/_template.js"></script>
+
+</body>
+</html>
