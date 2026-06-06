@@ -22,6 +22,7 @@
       <header class="hub-header">
         <h1 class="hub-title">SproutPlay</h1>
         <button id="settings-btn" class="settings-btn" aria-label="Settings">⚙️</button>
+        <button id="lock-btn" class="settings-btn lock-btn" aria-label="Lock app" style="display:none;">🔒</button>
       </header>
 
       <!-- App Grid -->
@@ -57,10 +58,10 @@
         <div class="settings-section">
           <h3>Parental Controls</h3>
           <label class="settings-toggle">
-            <span class="toggle-label">Parental Gate</span>
-            <input type="checkbox" id="parental-gate-toggle" class="toggle-input">
+            <span class="toggle-label">Lock SproutPlay</span>
+            <input type="checkbox" id="screen-lock-toggle" class="toggle-input">
             <span class="toggle-switch"></span>
-            <span class="toggle-description">Prevent accidental exits</span>
+            <span class="toggle-description">Prevent app exit</span>
           </label>
         </div>
 
@@ -87,6 +88,7 @@
   <script src="js/sound.js"></script>
   <script src="js/registry.js"></script>
   <script src="js/settings.js"></script>
+  <script src="js/lock.js"></script>
   <script src="js/router.js"></script>
   <script src="js/gesture.js"></script>
   <script src="js/hub.js"></script>

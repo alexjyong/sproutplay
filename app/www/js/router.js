@@ -68,9 +68,6 @@ const Router = (function() {
    * @returns {boolean} True if navigation succeeded
    */
   function back() {
-    if (typeof Settings !== 'undefined' && Settings.isParentalGateEnabled()) {
-      // Parental gate is enabled — gate UI not yet built; fall through to hub for now
-    }
     return navigate('hub');
   }
   
@@ -97,6 +94,12 @@ const Router = (function() {
     if (!isOnHub()) {
       // Not on hub - go back to hub
       back();
+      return true;
+    }
+
+    // On hub - check if locked (screen pinned)
+    if (typeof Settings !== 'undefined' && Settings.isScreenLocked()) {
+      // Locked — block exit (return true tells Android to keep the app)
       return true;
     }
 

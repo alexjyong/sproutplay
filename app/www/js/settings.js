@@ -8,8 +8,7 @@ const Settings = (function() {
   
   // Default settings
   const defaults = {
-    parentalGateEnabled: false,
-    parentalGateHoldDuration: 3000, // 3 seconds
+    screenLocked: false,
     soundEnabled: true,
     firstLaunch: true
   };
@@ -67,31 +66,23 @@ const Settings = (function() {
   }
   
   /**
-   * Toggle parental gate on/off
-   * @param {boolean} enabled - Whether to enable parental gate
+   * Set screen lock state (true = locked/pinned, false = unlocked).
+   * @param {boolean} locked - Whether the app is locked (pinned)
    */
-  function setParentalGate(enabled) {
-    current.parentalGateEnabled = enabled;
+  function setScreenLocked(locked) {
+    current.screenLocked = !!locked;
     save();
-    console.log('Settings: Parental gate', enabled ? 'enabled' : 'disabled');
+    console.log('Settings: Screen lock', locked ? 'enabled' : 'disabled');
   }
-  
+
   /**
-   * Check if parental gate is enabled
-   * @returns {boolean} True if parental gate is enabled
+   * Check if screen lock is enabled (app is pinned).
+   * @returns {boolean} True if the app is locked/pinned
    */
-  function isParentalGateEnabled() {
-    return current.parentalGateEnabled === true;
+  function isScreenLocked() {
+    return current.screenLocked === true;
   }
-  
-  /**
-   * Get parental gate hold duration
-   * @returns {number} Duration in milliseconds
-   */
-  function getParentalGateHoldDuration() {
-    return current.parentalGateHoldDuration || 3000;
-  }
-  
+
   /**
    * Mark first launch as complete
    */
@@ -125,9 +116,8 @@ const Settings = (function() {
     save,
     get,
     set,
-    setParentalGate,
-    isParentalGateEnabled,
-    getParentalGateHoldDuration,
+    setScreenLocked,
+    isScreenLocked,
     completeFirstLaunch,
     isFirstLaunch,
     reset
