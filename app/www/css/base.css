@@ -215,6 +215,5 @@ button:active {
 
 /* ===== Lock Button (Screen Pinning) ===== */
 .lock-btn {
-  /* right: calc(var(--spacing-md) + 56px); */
   left: var(--spacing-md)
 }
