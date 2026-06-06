@@ -19,7 +19,6 @@ const Hub = (function() {
    */
   function init() {
     if (isInitialized) {
-      console.log('Hub: Already initialized');
       return;
     }
     
@@ -32,8 +31,6 @@ const Hub = (function() {
       return;
     }
     
-    console.log('Hub: Initializing');
-
     // Render app icons
     renderAppIcons();
 
@@ -44,7 +41,6 @@ const Hub = (function() {
     setupPlaceholderBack();
 
     isInitialized = true;
-    console.log('Hub: Initialized');
   }
 
   /**
@@ -54,7 +50,6 @@ const Hub = (function() {
     var settingsBtn = document.getElementById('settings-btn');
     if (settingsBtn) {
       settingsBtn.addEventListener('click', function() {
-        console.log('Hub: Opening settings');
         if (typeof Router !== 'undefined') {
           Router.navigate('settings');
         }
@@ -152,12 +147,9 @@ const Hub = (function() {
 
     // Rapid tap prevention
     if (now - lastTapTime < TAP_DEBOUNCE) {
-      console.log('Hub: Ignoring rapid tap');
       return;
     }
     lastTapTime = now;
-
-    console.log('Hub: Tapped app:', app.name, 'placeholder:', app.placeholder);
 
     if (app.placeholder) {
       // Navigate to placeholder view

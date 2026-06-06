@@ -3,7 +3,7 @@
  * Generated tones for kids app feedback sounds
  */
 
-var Sound = (function() {
+const Sound = (function() {
   var audioCtx = null;
   var enabled = true;
 

@@ -8,8 +8,6 @@ const App = (function() {
    * Initialize the application
    */
   function init() {
-    console.log('SproutPlay: Starting...');
-    
     // Wait for DOM to be ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', onReady);
@@ -25,8 +23,6 @@ const App = (function() {
    * Called when DOM is ready
    */
   function onReady() {
-    console.log('SproutPlay: DOM ready');
-
     // Load settings
     if (typeof Settings !== 'undefined') {
       Settings.load();
@@ -48,9 +44,6 @@ const App = (function() {
 
     // Setup hardware back button handler (after Capacitor is ready)
     setupBackButton();
-
-    console.log('SproutPlay: Initialized');
-    console.log('SproutPlay: Welcome to SproutPlay!');
   }
   
   /**
@@ -76,7 +69,6 @@ const App = (function() {
       // Listen for changes
       parentalGateToggle.addEventListener('change', function() {
         Settings.setParentalGate(this.checked);
-        console.log('App: Parental gate set to', this.checked);
       });
     }
 
@@ -92,7 +84,6 @@ const App = (function() {
       soundToggle.addEventListener('change', function() {
         if (typeof Settings !== 'undefined') Settings.set('soundEnabled', this.checked);
         if (typeof Sound !== 'undefined') Sound.setEnabled(this.checked);
-        console.log('App: Sound set to', this.checked);
       });
     }
   }
@@ -109,9 +100,8 @@ const App = (function() {
             Router.handleBackButton();
           }
         }).catch(function(err) {
-          console.log('Back button listener error:', err);
+          console.warn('Back button listener error:', err);
         });
-        console.log('Capacitor back button listener registered');
       }
     };
 

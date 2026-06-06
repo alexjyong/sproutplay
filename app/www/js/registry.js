@@ -36,7 +36,6 @@ const AppRegistry = (function() {
     };
     
     apps.push(completeApp);
-    console.log('AppRegistry: Registered app:', completeApp.name);
     return true;
   }
   
@@ -74,7 +73,6 @@ const AppRegistry = (function() {
       return null;
     }
     
-    console.log('AppRegistry: Launching app:', app.name);
     return app;
   }
   
@@ -154,7 +152,6 @@ const AppRegistry = (function() {
       placeholder: true
     });
 
-    console.log('AppRegistry: Initialized with', apps.length, 'apps');
   }
   
   // Public API

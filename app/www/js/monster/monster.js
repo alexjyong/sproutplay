@@ -13,6 +13,15 @@ document.addEventListener('DOMContentLoaded', function () {
         '🍇': 'grapes',   '🍓': 'strawberries',  '🍕': 'pizza slices',
         '🍩': 'donuts',   '🥕': 'carrots',       '🍌': 'bananas',    '🫐': 'blueberries'
     };
+    var FOOD_SINGULAR = {
+        '🍎': 'apple',    '🍊': 'orange',       '🍋': 'lemon',
+        '🍇': 'grape',    '🍓': 'strawberry',    '🍕': 'pizza slice',
+        '🍩': 'donut',    '🥕': 'carrot',        '🍌': 'banana',     '🫐': 'blueberry'
+    };
+
+    function foodLabel(count) {
+        return count === 1 ? FOOD_SINGULAR[round.foodEmoji] : FOOD_NAMES[round.foodEmoji];
+    }
 
     var LEVEL3_PAIRS = [
         [1, 1], [1, 2], [1, 3], [1, 4], [1, 5],
@@ -211,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (typeof Sound === 'undefined') return;
         var text = level === 3 && round.displayA !== null
             ? round.displayA + ' plus what equals ' + (round.displayA + round.displayB) + '?'
-            : 'Feed me ' + round.target + ' ' + round.foodName + '!';
+            : 'Feed me ' + round.target + ' ' + foodLabel(round.target) + '!';
         Sound.speak(text);
     }
 
@@ -314,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(function () { monsterContainer.classList.remove('yuck'); }, 500);
             if (typeof Sound !== 'undefined') {
                 Sound.overfed();
-                Sound.speak('Yuck! The monster wants ' + round.foodName + '!');
+                Sound.speak('Yuck! The monster wants ' + foodLabel(round.target) + '!');
             }
             return;
         }
@@ -380,10 +389,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function showCelebration() {
-        celebrationMsg.textContent = 'You fed the monster ' + round.target + ' ' + round.foodName + '!';
+        celebrationMsg.textContent = 'You fed the monster ' + round.target + ' ' + foodLabel(round.target) + '!';
         celebrationEl.style.display = 'flex';
         if (typeof Sound !== 'undefined') {
-            Sound.speak('You did it! You fed the monster ' + round.target + ' ' + round.foodName + '!');
+            Sound.speak('You did it! You fed the monster ' + round.target + ' ' + foodLabel(round.target) + '!');
         }
         autoDismissTimer = setTimeout(function () {
             if (celebrating) {

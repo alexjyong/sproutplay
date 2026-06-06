@@ -1,9 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 /* ===== Paint Header ===== */
 .paint-header {
     position: fixed;
@@ -20,6 +14,7 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
+/* mini-app override — paint header uses position:fixed; back button stays absolute within it */
 .back-button {
     position: absolute;
     left: 12px;
@@ -30,9 +25,6 @@
     padding: 8px 16px;
     font-size: 16px;
     font-weight: 600;
-    cursor: pointer;
-    min-width: 48px;
-    min-height: 48px;
     transition: background 0.2s;
 }
 

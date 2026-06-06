@@ -23,8 +23,6 @@ const Router = (function() {
     if (!views.hub) {
       console.error('Router: Hub view not found');
     }
-    
-    console.log('Router: Initialized');
   }
   
   /**
@@ -37,8 +35,6 @@ const Router = (function() {
       console.error('Router: View not found:', viewName);
       return false;
     }
-    
-    console.log('Router: Navigating to', viewName, data);
     
     // Hide all views
     Object.values(views).forEach(view => {
@@ -72,16 +68,9 @@ const Router = (function() {
    * @returns {boolean} True if navigation succeeded
    */
   function back() {
-    console.log('Router: Going back from', currentView);
-    
-    // Check parental gate
     if (typeof Settings !== 'undefined' && Settings.isParentalGateEnabled()) {
-      // For Phase 1, just log - gate challenge will be added in Phase 2
-      console.log('Router: Parental gate is enabled - would show challenge');
-      // In Phase 2, this will trigger the hold-button challenge
+      // Parental gate is enabled — gate UI not yet built; fall through to hub for now
     }
-    
-    // Always return to hub for now
     return navigate('hub');
   }
   
@@ -111,9 +100,8 @@ const Router = (function() {
       return true;
     }
 
-    // On hub - allow exit (TODO: block when parental gate is enabled in Phase 2)
-    console.log('Router: Back pressed on hub - allowing exit');
-    return false; // Allow exit
+    // On hub - allow exit
+    return false;
   }
   
   // Public API
