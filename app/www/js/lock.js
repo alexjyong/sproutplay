@@ -70,7 +70,7 @@ const Lock = (function() {
     ScreenPinning.enterPinnedMode()
       .then(function() {
         isLocked = true;
-        lockBtn.textContent = '🔓 Unlock';
+        lockBtn.textContent = '🔓';
         lockBtn.setAttribute('aria-label', 'Unlock app');
         showToast('Tap 4 times quickly to unlock', 2000);
         // Reset tap counter for unlock sequence
