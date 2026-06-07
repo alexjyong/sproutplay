@@ -97,12 +97,6 @@ const Router = (function() {
       return true;
     }
 
-    // On hub - check if locked (screen pinned)
-    if (typeof Settings !== 'undefined' && Settings.isScreenLocked()) {
-      // Locked — block exit (return true tells Android to keep the app)
-      return true;
-    }
-
     // On hub - allow exit
     return false;
   }
