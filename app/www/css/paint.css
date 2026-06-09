@@ -532,10 +532,6 @@ button.utility.history-btn {
     font-weight: 700;
 }
 
-#lockButton {
-    bottom: 260px;
-}
-
 .sub-fab.expanded {
     transform: scale(1);
     opacity: 1;

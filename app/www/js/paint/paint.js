@@ -213,31 +213,18 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
     }, { passive: false });
 
-    // ── Lock / screen pinning ─────────────────────────────────────────────────
-
-    var ScreenPinning = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.ScreenPinning;
     var fabButton = document.getElementById('fabButton');
     var saveSubFab = document.getElementById('saveSubFab');
     var clearSubFab = document.getElementById('clearSubFab');
     var helpSubFab = document.getElementById('helpSubFab');
-    var lockButton = document.getElementById('lockButton');
-    var isLocked = false;
     var fabOpen = false;
-    var tapCountLock = 0;
-    var lastTapLock = 0;
-
-    // Hide lock button when ScreenPinning is unavailable
-    if (!ScreenPinning) {
-        lockButton.style.display = 'none';
-    }
 
     function setFabState(open) {
         fabOpen = open;
         fabButton.classList.toggle('expanded', open);
         saveSubFab.classList.toggle('expanded', open);
         clearSubFab.classList.toggle('expanded', open);
-        helpSubFab.classList.toggle('expanded', open && !isLocked);
-        if (ScreenPinning) lockButton.classList.toggle('expanded', open);
+        helpSubFab.classList.toggle('expanded', open);
     }
 
     fabButton.addEventListener('click', function () {
@@ -254,50 +241,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('helpClose').addEventListener('click', function () {
         helpModal.style.display = 'none';
-    });
-
-    lockButton.addEventListener('click', function () {
-        if (!isLocked) {
-            ScreenPinning.enterPinnedMode()
-                .then(function () {
-                    isLocked = true;
-                    lockButton.textContent = 'Unlock app';
-                    helpSubFab.classList.remove('expanded');
-                    showCustomToast('Tap 4 times quickly to unlock', 2000);
-                    setFabState(fabOpen);
-                })
-                .catch(function (err) {
-                    console.error('enterPinnedMode failed', err);
-                });
-        } else {
-            var now = Date.now();
-            if (lastTapLock === 0 || now - lastTapLock >= 1000) {
-                tapCountLock = 1;
-                showCustomToast('Tap 3 more times quickly to unlock', 2000);
-            } else {
-                tapCountLock++;
-                if (tapCountLock >= 4) {
-                    ScreenPinning.exitPinnedMode()
-                        .then(function () {
-                            isLocked = false;
-                            tapCountLock = 0;
-                            lastTapLock = 0;
-                            lockButton.textContent = 'Lock app';
-                            showCustomToast('App unlocked', 2000);
-                            setFabState(fabOpen);
-                        })
-                        .catch(function (err) {
-                            console.error('exitPinnedMode failed', err);
-                            showCustomToast('Error unlocking app', 2000);
-                        });
-                    return;
-                } else {
-                    var remaining = 4 - tapCountLock;
-                    showCustomToast('Tap ' + remaining + ' more time' + (remaining === 1 ? '' : 's') + ' quickly to unlock', 2000);
-                }
-            }
-            lastTapLock = now;
-        }
     });
 
     undoButton.addEventListener('click', function () {
