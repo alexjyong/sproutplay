@@ -125,17 +125,8 @@ const Lock = (function() {
         lastTapTime = 0;
         lockBtn.textContent = '🔒';
         lockBtn.setAttribute('aria-label', 'Lock app');
-        lockBtn.style.display = 'none';
+        lockBtn.style.display = 'flex';
         showToast('App unlocked', 2000);
-        // Update settings to reflect unlocked state
-        if (typeof Settings !== 'undefined') {
-          Settings.setScreenLocked(false);
-        }
-        // Update the Settings toggle UI (it won't fire a change event programmatically)
-        var screenLockToggle = document.getElementById('screen-lock-toggle');
-        if (screenLockToggle) {
-          screenLockToggle.checked = false;
-        }
       })
       .catch(function(err) {
         console.error('Lock: exitPinnedMode failed', err);
