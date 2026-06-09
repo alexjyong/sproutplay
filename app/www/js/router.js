@@ -68,9 +68,6 @@ const Router = (function() {
    * @returns {boolean} True if navigation succeeded
    */
   function back() {
-    if (typeof Settings !== 'undefined' && Settings.isParentalGateEnabled()) {
-      // Parental gate is enabled — gate UI not yet built; fall through to hub for now
-    }
     return navigate('hub');
   }
   

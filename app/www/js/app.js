@@ -60,18 +60,6 @@ const App = (function() {
       });
     }
     
-    // Parental gate toggle
-    const parentalGateToggle = document.getElementById('parental-gate-toggle');
-    if (parentalGateToggle && typeof Settings !== 'undefined') {
-      // Set initial state
-      parentalGateToggle.checked = Settings.isParentalGateEnabled();
-
-      // Listen for changes
-      parentalGateToggle.addEventListener('change', function() {
-        Settings.setParentalGate(this.checked);
-      });
-    }
-
     // Sound toggle
     const soundToggle = document.getElementById('sound-toggle');
     if (soundToggle) {
@@ -84,6 +72,32 @@ const App = (function() {
       soundToggle.addEventListener('change', function() {
         if (typeof Settings !== 'undefined') Settings.set('soundEnabled', this.checked);
         if (typeof Sound !== 'undefined') Sound.setEnabled(this.checked);
+      });
+    }
+
+    // Lock icon (visible when lock is enabled)
+    const lockBtn = document.getElementById('lock-btn');
+    if (lockBtn && typeof Settings !== 'undefined') {
+      // Set initial state from saved settings
+      const locked = Settings.isScreenLocked();
+      if (locked) {
+        Lock.setLockedState(true);
+      }
+    }
+
+    // Lock SproutPlay toggle in Settings
+    const screenLockToggle = document.getElementById('screen-lock-toggle');
+    if (screenLockToggle && typeof Settings !== 'undefined') {
+      // Set initial state
+      screenLockToggle.checked = Settings.isScreenLocked();
+
+      // Listen for changes
+      screenLockToggle.addEventListener('change', function() {
+        Settings.setScreenLocked(this.checked);
+        // Update lock icon visibility
+        if (typeof Lock !== 'undefined') {
+          Lock.setLockedState(this.checked);
+        }
       });
     }
   }

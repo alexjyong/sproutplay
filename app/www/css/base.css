@@ -212,3 +212,8 @@ button:active {
     padding-top: calc(var(--spacing-lg) + env(safe-area-inset-top));
   }
 }
+
+/* ===== Lock Button (Screen Pinning) ===== */
+.lock-btn {
+  left: var(--spacing-md)
+}
