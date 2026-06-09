@@ -123,7 +123,6 @@ const AppRegistry = (function() {
       path: 'monster/index.html'
     });
 
-    // Register placeholder apps for future mini-apps
     register({
       id: 'space',
       name: 'Space Hero',
@@ -134,6 +133,18 @@ const AppRegistry = (function() {
       path: 'space/index.html'
     });
 
+    // Register Rhythm Tap — Simon-style beat matching game
+    register({
+      id: 'rhythm',
+      name: 'Rhythm Tap',
+      icon: '🥁',
+      description: 'Repeat the beats!',
+      backgroundColor: 'color-4',
+      placeholder: false,
+      path: 'rhythm/index.html'
+    });
+
+    // Register placeholder apps for future mini-apps
     register({
       id: 'coming-soon-2',
       name: 'Stay Tuned',

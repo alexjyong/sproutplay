@@ -24,6 +24,9 @@ A breakout-style brick breaker with a paddle, ball, and colored blocks. Features
 ### 🐲 Feed the Monster
 A drag-and-drop math game with three difficulty levels. A hungry monster displays a target number on its sign and speaks it aloud — kids drag the right amount of food into its mouth. Wrong food bounces back with a "Yuck!" shake. Level 1 targets 1–5, Level 2 targets 1–7, Level 3 is missing-addend mode ("3 + ? = 5 🍇") where some items are already eaten and the child feeds only the remainder. Win five rounds in a row to level up; progress persists across sessions.
 
+### 🥁 Rhythm Tap
+A Simon-style beat matching game. Watch a pattern of beats play with visual pulses, then tap the game area to repeat it. Three difficulty levels control starting pattern length and tempo (Easy: 2–4 beats, Medium: 4–6, Hard: 6–8). Pattern grows by 1 beat per successful round, up to 8 beats.
+
 ### 🏠 Hub
 The main menu is a colorful grid of app icons. Tap one to launch that mini-app. Hit the back button to return. A ⚙️ Settings button in the top-right corner opens settings for the app:
 * Toggle **Sound Effects** on/off  and toggle **Lock SproutPlay** on/off. 

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="color-scheme" content="light dark">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+    <!-- base.css MUST come first — provides shared button, back-button, and layout resets -->
+    <link rel="stylesheet" href="../css/base.css" type="text/css" media="screen">
+
+    <!-- Rhythm Tap styles -->
+    <link rel="stylesheet" href="../css/rhythm.css" type="text/css" media="screen">
+
+    <title>SproutPlay - Rhythm Tap!</title>
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- Header -->
+        <header class="rhythm-header">
+            <button id="rhythm-back" class="back-button" aria-label="Back to hub">← Back</button>
+            <h1 class="rhythm-title">Rhythm Tap</h1>
+        </header>
+
+        <!-- Main game area -->
+        <div id="game-area" class="game-area">
+            <!-- Character displayed by JS -->
+            <div id="character" class="character">🥁</div>
+        </div>
+
+        <!-- Difficulty selection screen (shown before first round) -->
+        <div id="difficulty-screen" class="difficulty-overlay">
+            <div class="difficulty-card">
+                <h2>Choose Difficulty</h2>
+                <div class="difficulty-buttons">
+                    <button id="easy-btn" class="difficulty-btn easy">Easy</button>
+                    <button id="medium-btn" class="difficulty-btn medium">Medium</button>
+                    <button id="hard-btn" class="difficulty-btn hard">Hard</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Celebration overlay -->
+        <div id="celebration" class="celebration-overlay" style="display:none">
+            <div class="celebration-card">
+                <div class="celebration-emoji">🎉</div>
+                <h2 id="celebration-title">You did it!</h2>
+                <p id="celebration-msg">Great job!</p>
+                <button id="play-again-btn" class="play-again-button">Play Again 🎮</button>
+                <button id="celebration-back" class="play-again-button secondary">Back to Hub</button>
+            </div>
+        </div>
+
+    </div><!-- /.app-container -->
+
+    <!--
+      Script load order matters — do not rearrange:
+        1. sound.js       — shared Sound module (Web Audio + TTS + NativeAudio phonics)
+        2. mini-app-back  — registers Android hardware back button → hub navigation
+        3. your app JS    — runs last, after all dependencies are ready
+    -->
+    <script src="../js/sound.js"></script>
+    <script src="../js/mini-app-back.js"></script>
+    <script src="../js/rhythm/rhythm.js"></script>
+
+</body>
+</html>

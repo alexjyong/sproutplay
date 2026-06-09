@@ -16,9 +16,9 @@ description: "Task list for Rhythm Tap implementation"
 
 ## Phase 1: Setup — Create mini-app directory structure
 
-- [ ] T001 Create `app/www/rhythm/` directory with `index.html` (copy from `_template/index.html`, update all TODOs)
-- [ ] T002 Create `app/www/css/rhythm.css` (per-game stylesheet, copy from template CSS pattern)
-- [ ] T003 Create `app/www/js/rhythm/` directory with `rhythm.js` (game logic)
+- [x] T001 Create `app/www/rhythm/` directory with `index.html` (copy from `_template/index.html`, update all TODOs)
+- [x] T002 Create `app/www/css/rhythm.css` (per-game stylesheet, copy from template CSS pattern)
+- [x] T003 Create `app/www/js/rhythm/` directory with `rhythm.js` (game logic)
 
 ---
 
@@ -26,12 +26,12 @@ description: "Task list for Rhythm Tap implementation"
 
 **⚠️ CRITICAL**: No game logic can work until this phase is complete.
 
-- [ ] T004 Update `rhythm/index.html` — set title to "SproutPlay - Rhythm Tap!", update header classes (`rhythm-header`, `rhythm-title`), update back button id (`rhythm-back`)
-- [ ] T005 Update `rhythm/index.html` — include `../js/sound.js` and `../js/mini-app-back.js` in correct script load order (before game JS)
-- [ ] T006 Update `rhythm/index.html` — add celebration overlay (reuse template pattern: `#celebration` with `#play-again-btn`, `#celebration-back`)
-- [ ] T007 Create `rhythm.css` — header styles (`.rhythm-header`, `.rhythm-title`) following existing mini-app CSS conventions (see `memory.css`, `abc.css` for patterns)
-- [ ] T008 Create `rhythm.css` — character display area styles (the main visual element that pulses with each beat)
-- [ ] T009 Create `rhythm.css` — celebration overlay styles (reuse template pattern, match existing mini-app celebration styling)
+- [x] T004 Update `rhythm/index.html` — set title to "SproutPlay - Rhythm Tap!", update header classes (`rhythm-header`, `rhythm-title`), update back button id (`rhythm-back`)
+- [x] T005 Update `rhythm/index.html` — include `../js/sound.js` and `../js/mini-app-back.js` in correct script load order (before game JS)
+- [x] T006 Update `rhythm/index.html` — add celebration overlay (reuse template pattern: `#celebration` with `#play-again-btn`, `#celebration-back`)
+- [x] T007 Create `rhythm.css` — header styles (`.rhythm-header`, `.rhythm-title`) following existing mini-app CSS conventions (see `memory.css`, `abc.css` for patterns)
+- [x] T008 Create `rhythm.css` — character display area styles (the main visual element that pulses with each beat)
+- [x] T009 Create `rhythm.css` — celebration overlay styles (reuse template pattern, match existing mini-app celebration styling)
 
 **Checkpoint**: HTML page loads, shows character, back button navigates to hub, celebration overlay renders.
 
@@ -45,16 +45,16 @@ description: "Task list for Rhythm Tap implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Create `rhythm.js` — game configuration constants (BEAT_SOUNDS array with distinct frequencies/timbres, STARTING_BEATS = 2, MAX_BEATS = 8)
-- [ ] T011 [US1] Create `rhythm.js` — DOM references (character element, game area, celebration overlay, back button, play again button)
-- [ ] T012 [US1] Create `rhythm.js` — `playPattern(pattern)` function: iterates through beats, calls `Sound.tone()` for each beat sound, triggers visual pulse animation on character element
-- [ ] T013 [US1] Create `rhythm.js` — `playBeat(index)` function: plays the sound for beat at given index, adds CSS class to character for pulse animation, removes class after animation completes
-- [ ] T014 [US1] Create `rhythm.js` — CSS pulse animation keyframes (`.character.pulsing`) — glow/bounce effect synchronized with beat timing
-- [ ] T015 [US1] Create `rhythm.js` — `startPlayback()` function: generates random pattern of N beats, calls `playPattern()`, disables input during playback
-- [ ] T016 [US1] Create `rhythm.js` — `handleChildTap(e)` function: records child's tap, plays corresponding beat sound, adds visual pulse, compares against pattern
-- [ ] T017 [US1] Create `rhythm.js` — `checkMatch()` function: compares child's tap sequence against original pattern, triggers celebration on match or replays pattern on mismatch
-- [ ] T018 [US1] Create `rhythm.js` — `showCelebration()` function: shows celebration overlay, plays `Sound.celebrate()`
-- [ ] T019 [US1] Create `rhythm.js` — `init()` function: sets up event listeners (back button, play again, celebration back), calls `startNewGame()`
+- [x] T010 [US1] Create `rhythm.js` — game configuration constants (BEAT_SOUNDS array with distinct frequencies/timbres, STARTING_BEATS = 2, MAX_BEATS = 8)
+- [x] T011 [US1] Create `rhythm.js` — DOM references (character element, game area, celebration overlay, back button, play again button)
+- [x] T012 [US1] Create `rhythm.js` — `playPattern(pattern)` function: iterates through beats, calls `Sound.tone()` for each beat sound, triggers visual pulse animation on character element
+- [x] T013 [US1] Create `rhythm.js` — `playBeat(index)` function: plays the sound for beat at given index, adds CSS class to character for pulse animation, removes class after animation completes
+- [x] T014 [US1] Create `rhythm.js` — CSS pulse animation keyframes (`.character.pulsing`) — glow/bounce effect synchronized with beat timing
+- [x] T015 [US1] Create `rhythm.js` — `startPlayback()` function: generates random pattern of N beats, calls `playPattern()`, disables input during playback
+- [x] T016 [US1] Create `rhythm.js` — `handleChildTap(e)` function: records child's tap by zone (8 zones across game area width), plays corresponding beat sound, adds visual pulse, compares against pattern
+- [x] T017 [US1] Create `rhythm.js` — `checkMatch()` function: compares child's tap sequence against original pattern, triggers celebration on match or replays pattern on mismatch
+- [x] T018 [US1] Create `rhythm.js` — `showCelebration()` function: shows celebration overlay, plays `Sound.celebrate()`
+- [x] T019 [US1] Create `rhythm.js` — `init()` function: sets up event listeners (back button, play again, celebration back), calls `startNewGame()`
 
 **Checkpoint**: User Story 1 is fully functional — child can watch a 2-beat pattern, tap to repeat, see celebration on match.
 
@@ -99,8 +99,8 @@ description: "Task list for Rhythm Tap implementation"
 
 ## Phase 6: Hub Integration — Register on launcher
 
-- [ ] T031 [P] Update `app/www/js/registry.js` — register rhythm app with `register({ id: 'rhythm', name: 'Rhythm Tap', icon: '🥁', description: 'Repeat the beats!', backgroundColor: 'color-4', placeholder: false, path: 'rhythm/index.html' })`
-- [ ] T032 [P] Update `README.md` — add Rhythm Tap to "What's Inside" section under mini-apps
+- [x] T031 [P] Update `app/www/js/registry.js` — register rhythm app with `register({ id: 'rhythm', name: 'Rhythm Tap', icon: '🥁', description: 'Repeat the beats!', backgroundColor: 'color-4', placeholder: false, path: 'rhythm/index.html' })`
+- [x] T032 [P] Update `README.md` — add Rhythm Tap to "What's Inside" section under mini-apps
 
 ---
 
