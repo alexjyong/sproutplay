@@ -10,7 +10,7 @@ height="80">](https://github.com/alexjyong/sproutplay/releases/latest/)
 ## What's Inside
 
 ### 🎨 Paint
-A drawing canvas with 9 colors, 4 brush sizes (S/M/L/XL), an eraser, and undo/redo (up to 20 steps). Kids can save their artwork to the device gallery. A screen lock mode (using Android Screen Pinning) keeps little hands from accidentally leaving the app.
+A drawing canvas with 9 colors, 4 brush sizes (S/M/L/XL), an eraser, and undo/redo (up to 20 steps). Kids can save their artwork to the device gallery. A floating action button (FAB) expands to reveal Save, Clear, and Help options.
 
 ### 🧠 Memory
 A 4×4 card matching game with 8 emoji pairs (chosen from 12 animals). Flip two cards at a time to find matching pairs, with synthesized sound effects for flips, matches, and misses. A celebration screen with stars appears when all pairs are found.
@@ -25,9 +25,19 @@ A breakout-style brick breaker with a paddle, ball, and colored blocks. Features
 A drag-and-drop math game with three difficulty levels. A hungry monster displays a target number on its sign and speaks it aloud — kids drag the right amount of food into its mouth. Wrong food bounces back with a "Yuck!" shake. Level 1 targets 1–5, Level 2 targets 1–7, Level 3 is missing-addend mode ("3 + ? = 5 🍇") where some items are already eaten and the child feeds only the remainder. Win five rounds in a row to level up; progress persists across sessions.
 
 ### 🏠 Hub
-The main menu is a colorful grid of app icons. Tap one to launch that mini-app. Hit the back button to return. A ⚙️ Settings button in the top-right corner has toggles for sound effects and a parental gate option (framework is in place, challenge to be implemented).
+The main menu is a colorful grid of app icons. Tap one to launch that mini-app. Hit the back button to return. A ⚙️ Settings button in the top-right corner opens settings for the app:
+* Toggle **Sound Effects** on/off  and toggle **Lock SproutPlay** on/off. 
+* When Lock SproutPlay is enabled, a 🔒 lock button appears in the hub header — tap it to pin the screen using Android's Screen Pinning. To unlock, tap the 🔓 button 4 times quickly (within 1-second windows). 
 
 More games are planned! Stay tuned!
+
+## Global Features
+
+### 🔒 Screen Lock (Parental Control)
+Enable **Lock SproutPlay** in Settings to show a 🔒 lock button on the hub header. Tap it to pin the entire app using Android's `startLockTask` — kids can't leave or switch apps. To unlock, tap the 🔓 button 4 times quickly (within 1-second windows).
+
+### 💾 Settings Persistence
+All settings (Sound Effects, Lock SproutPlay) are saved to localStorage and restored on app launch.
 
 ## Build It Yourself
 
