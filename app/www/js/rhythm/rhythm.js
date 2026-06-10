@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var characterEl = document.getElementById('character');
     var gameArea = document.getElementById('game-area');
+    var beatIndicator = document.getElementById('beat-indicator');
     var difficultyScreen = document.getElementById('difficulty-screen');
     var celebrationEl = document.getElementById('celebration');
     var celebrationTitle = document.getElementById('celebration-title');
@@ -152,6 +153,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Show round counter
         updateRoundDisplay();
 
+        // Show beat dots for the current pattern length
+        renderBeatDots();
+
         // Start playback after a short pause
         setTimeout(function() {
             startPlayback(pattern);
@@ -183,12 +187,48 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /**
+     * Build or update the beat indicator dots at the bottom of the screen.
+     * Shows one dot per beat in the current pattern (gray = unplayed).
+     */
+    function renderBeatDots() {
+        if (!beatIndicator) return;
+        beatIndicator.innerHTML = '';
+        for (var i = 0; i < pattern.length; i++) {
+            var dot = document.createElement('div');
+            dot.className = 'beat-dot';
+            dot.dataset.index = i;
+            beatIndicator.appendChild(dot);
+        }
+        // Show the indicator during child's turn
+        if (isChildTurn && pattern.length > 0) {
+            beatIndicator.classList.add('visible');
+        } else {
+            beatIndicator.classList.remove('visible');
+        }
+    }
+
+    /**
+     * Highlight the dot for a specific beat index.
+     */
+    function highlightDot(index, className) {
+        if (!beatIndicator) return;
+        var dot = beatIndicator.querySelector('.beat-dot[data-index="' + index + '"]');
+        if (dot) {
+            dot.className = 'beat-dot ' + (className || 'active');
+        }
+    }
+
+    /**
      * T015: Play back the original pattern beat by beat.
      * Disables child input during playback.
      */
     function startPlayback(pattern) {
         isPlaying = true;
         isChildTurn = false;
+        // Hide beat dots during playback
+        if (beatIndicator) {
+            beatIndicator.classList.remove('visible');
+        }
         var beatIndex = 0;
 
         function playNextBeat() {
@@ -249,6 +289,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Record child's tap
         childTaps.push(tappedBeatIndex);
 
+        // Highlight the corresponding dot
+        highlightDot(tappedBeatIndex, 'active');
+
         // Play the beat sound and visual pulse
         playBeat(tappedBeatIndex);
 
@@ -279,13 +322,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 Sound.celebrate();
             }
 
+            // Mark all dots green (matched)
+            for (var i = 0; i < pattern.length; i++) {
+                highlightDot(i, 'matched');
+            }
+
             if (currentRound >= config.maxBeats) {
-                showMaxRoundCelebration();
+                handleMaxRound();
             } else {
                 showCelebration();
             }
         } else {
-            // Mismatch — replay pattern
+            // Mismatch — mark wrong dots red, correct ones green
+            for (var i = 0; i < pattern.length; i++) {
+                if (childTaps[i] !== pattern[i]) {
+                    highlightDot(i, 'mismatched');
+                } else {
+                    highlightDot(i, 'matched');
+                }
+            }
+
+            // Replay pattern
             showToast('Listen carefully!', 1500);
             setTimeout(function() {
                 playPattern(pattern);
@@ -309,15 +366,50 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /**
-     * Show max-round celebration (completed all 8 beats).
+     * T024: Handle max round completion.
+     * When child completes all beats at max difficulty, show congratulations
+     * and offer to restart (new game) or continue at max round.
      */
-    function showMaxRoundCelebration() {
+    function handleMaxRound() {
         if (celebrationTitle) {
             celebrationTitle.textContent = "You're a Rhythm Master!";
         }
         if (celebrationMsg) {
-            celebrationMsg.textContent = 'You completed all 8 beats!';
+            celebrationMsg.textContent = 'You completed all ' + config.maxBeats + ' beats!';
         }
+
+        // Replace the single "Play Again" button with two options
+        if (playAgainBtn) {
+            playAgainBtn.textContent = 'Restart New Game 🎮';
+        }
+
+        // Add a "Continue at Max" button if it doesn't exist yet
+        var continueBtn = document.getElementById('continue-max-btn');
+        if (!continueBtn) {
+            continueBtn = document.createElement('button');
+            continueBtn.id = 'continue-max-btn';
+            continueBtn.className = 'play-again-button secondary';
+            continueBtn.textContent = 'Continue at Max 🔄';
+            celebrationEl.insertBefore(continueBtn, celebrationBackBtn);
+
+            continueBtn.addEventListener('click', function() {
+                hideCelebration();
+                // Stay at max round — generate a new pattern of the same length
+                pattern = generatePattern(config.maxBeats);
+                childTaps = [];
+                isChildTurn = false;
+                setTimeout(function() {
+                    startPlayback(pattern);
+                }, 800);
+            });
+        }
+
+        // Wire restart button to fully reset the game
+        playAgainBtn.onclick = function() {
+            hideCelebration();
+            startNewGame();
+        };
+
         if (celebrationEl) {
             celebrationEl.style.display = 'flex';
         }
@@ -332,6 +424,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         var existing = document.getElementById('round-display');
         if (existing) existing.remove();
+        // Hide beat indicator when celebration is hidden
+        if (beatIndicator) {
+            beatIndicator.classList.remove('visible');
+            beatIndicator.innerHTML = '';
+        }
     }
 
     /**

@@ -153,27 +153,45 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* ===== Beat Indicator (visual feedback during child's turn) ===== */
+/* ===== Beat Zone Indicators (8 zones, visible during child's turn) ===== */
 .beat-indicator {
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1001;
+    display: none;
+    gap: 6px;
+}
+
+.beat-indicator.visible {
     display: flex;
-    gap: 8px;
 }
 
 .beat-dot {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    background: #ddd;
-    transition: background 0.2s, transform 0.2s;
+    background: rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    transition: background 0.15s, transform 0.15s, border-color 0.15s;
 }
 
 .beat-dot.active {
     background: #FFD93D;
+    border-color: #FF9800;
+    transform: scale(1.3);
+}
+
+.beat-dot.matched {
+    background: #4CAF50;
+    border-color: #388E3C;
+    transform: scale(1.2);
+}
+
+.beat-dot.mismatched {
+    background: #E53935;
+    border-color: #C62828;
     transform: scale(1.2);
 }
 

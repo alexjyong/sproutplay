@@ -68,12 +68,12 @@ description: "Task list for Rhythm Tap implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T020 [US2] Create `rhythm.js` — game state variables (`currentRound`, `pattern`, `childTaps`, `isPlaying`, `isChildTurn`)
-- [ ] T021 [US2] Create `rhythm.js` — `nextRound()` function: increments round, increases pattern length by 1 (capped at MAX_BEATS), generates new random pattern
-- [ ] T022 [US2] Create `rhythm.js` — `updateRoundDisplay()` function: updates round counter text on screen
-- [ ] T023 [US2] Create `rhythm.js` — `startNewGame()` function: resets round to 1, clears state, calls `nextRound()`
-- [ ] T024 [US2] Create `rhythm.js` — `handleMaxRound()` function: when pattern reaches 8 beats and child completes it, show congratulations and offer to restart or continue at max
-- [ ] T025 [US2] Update `rhythm.css` — round counter display styles (positioned in header or game area)
+- [x] T020 [US2] Create `rhythm.js` — game state variables (`currentRound`, `pattern`, `childTaps`, `isPlaying`, `isChildTurn`)
+- [x] T021 [US2] Create `rhythm.js` — `nextRound()` function: increments round, increases pattern length by 1 (capped at MAX_BEATS), generates new random pattern
+- [x] T022 [US2] Create `rhythm.js` — `updateRoundDisplay()` function: updates round counter text on screen
+- [x] T023 [US2] Create `rhythm.js` — `startNewGame()` function: resets round to 0, clears state, calls `nextRound()` (which bumps round to 1)
+- [x] T024 [US2] Create `rhythm.js` — `handleMaxRound()` function: when pattern reaches 8 beats and child completes it, show congratulations and offer to restart or continue at max
+- [x] T025 [US2] Update `rhythm.css` — round counter display styles (positioned in header or game area)
 
 **Checkpoint**: User Stories 1 AND 2 work together — child can play multiple rounds with increasing difficulty.
 
@@ -106,7 +106,7 @@ description: "Task list for Rhythm Tap implementation"
 
 ## Phase 7: Polish & QA
 
-- [ ] T033 Ensure all mini-apps follow consistent visual design (character size, colors, animations match other mini-apps)
+- [x] T033 Ensure all mini-apps follow consistent visual design (character size, colors, animations match other mini-apps)
 - [ ] T034 Test on Android device: verify audio plays correctly, animations are smooth (60fps), back button returns to hub
 - [ ] T035 Test edge cases: rapid tapping during playback (ignored), leaving and returning to app (state preserved), sound toggle off (no audio but game still works)
 - [ ] T036 Verify game loads within 3 seconds of tapping hub icon
