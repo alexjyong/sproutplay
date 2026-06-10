@@ -58,6 +58,7 @@
     cursor: default;
     user-select: none;
     -webkit-user-select: none;
+    pointer-events: none;
     transition: transform 0.1s ease;
 }
 

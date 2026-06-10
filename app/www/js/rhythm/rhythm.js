@@ -153,9 +153,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // Show round counter
         updateRoundDisplay();
 
-        // Show beat dots for the current pattern length
-        renderBeatDots();
-
         // Start playback after a short pause
         setTimeout(function() {
             startPlayback(pattern);
@@ -187,32 +184,30 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /**
-     * Build or update the beat indicator dots at the bottom of the screen.
-     * Shows one dot per beat in the current pattern (gray = unplayed).
+     * Build 8 zone dots at the bottom of the screen.
+     * Each dot represents one of the 8 tap zones (left to right).
+     * Always visible — shows gray dots normally, highlights during playback,
+     * turns green/red on match/mismatch.
      */
     function renderBeatDots() {
         if (!beatIndicator) return;
         beatIndicator.innerHTML = '';
-        for (var i = 0; i < pattern.length; i++) {
+        for (var i = 0; i < BEAT_SOUNDS.length; i++) {
             var dot = document.createElement('div');
             dot.className = 'beat-dot';
-            dot.dataset.index = i;
+            dot.dataset.zone = i;
             beatIndicator.appendChild(dot);
         }
-        // Show the indicator during child's turn
-        if (isChildTurn && pattern.length > 0) {
-            beatIndicator.classList.add('visible');
-        } else {
-            beatIndicator.classList.remove('visible');
-        }
+        // Always show the indicator (8 dots, one per zone)
+        beatIndicator.classList.add('visible');
     }
 
     /**
-     * Highlight the dot for a specific beat index.
+     * Highlight a zone dot by its zone index (0–7).
      */
-    function highlightDot(index, className) {
+    function highlightDot(zoneIndex, className) {
         if (!beatIndicator) return;
-        var dot = beatIndicator.querySelector('.beat-dot[data-index="' + index + '"]');
+        var dot = beatIndicator.querySelector('.beat-dot[data-zone="' + zoneIndex + '"]');
         if (dot) {
             dot.className = 'beat-dot ' + (className || 'active');
         }
@@ -237,6 +232,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 isPlaying = false;
                 isChildTurn = true;
                 childTaps = [];
+                // Show beat dots now that child can tap
+                renderBeatDots();
                 return;
             }
 
