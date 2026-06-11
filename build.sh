@@ -5,7 +5,35 @@
 
 set -e
 
+# Parse arguments
+CLEAN=false
+for arg in "$@"; do
+  case "$arg" in
+    --clean)
+      CLEAN=true
+      shift
+      ;;
+    *)
+      echo "Unknown option: $arg"
+      exit 1
+      ;;
+  esac
+done
+
 echo "🌱 Building SproutPlay..."
+
+# Clean mode: remove cached artifacts
+if [ "$CLEAN" = true ]; then
+  echo "🧹 Clean mode — removing cached artifacts..."
+  if [ -d "app/node_modules" ]; then
+    echo "  Removing node_modules..."
+    rm -rf app/node_modules
+  fi
+  if [ -d "app/android/app/build" ]; then
+    echo "  Removing Gradle build outputs..."
+    rm -rf app/android/app/build
+  fi
+fi
 
 # Get the directory where this script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
