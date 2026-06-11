@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var childTaps = [];
     var isPlaying = false;
     var isChildTurn = false;
+    var tappedThisTurn = false;
 
     // ── T011: DOM References ─────────────────────────────────────────────────
 
@@ -99,11 +100,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Game area tap handler (child's turn)
         if (gameArea) {
-            gameArea.addEventListener('click', handleGameAreaTap);
-            gameArea.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                handleGameAreaTap(e);
-            });
+            // Use pointerdown when available; else touchend (mobile) or click (desktop)
+            var tapEvent = window.PointerEvent ? 'pointerdown' : 'touchend';
+            if (tapEvent === 'pointerdown') {
+                gameArea.addEventListener('pointerdown', handleGameAreaTap);
+            } else {
+                gameArea.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    handleGameAreaTap(e);
+                });
+            }
         }
     }
 
@@ -137,6 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
         childTaps = [];
         isPlaying = false;
         isChildTurn = false;
+        tappedThisTurn = false;
         nextRound();
     }
 
@@ -145,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     function nextRound() {
         currentRound++;
-        var beatCount = Math.min(currentRound, config.maxBeats);
+        var beatCount = Math.min(config.startBeats + currentRound - 1, config.maxBeats);
         pattern = generatePattern(beatCount);
         childTaps = [];
         isChildTurn = false;
@@ -272,14 +279,28 @@ document.addEventListener('DOMContentLoaded', function () {
     function handleGameAreaTap(e) {
         if (!isChildTurn || isPlaying) return;
 
-        // Determine which beat zone was tapped (8 zones across the width)
+        // Prevent double-firing on mobile (pointerdown fires once per tap)
+        if (tappedThisTurn) return;
+        tappedThisTurn = true;
+        setTimeout(function() { tappedThisTurn = false; }, 250);
+
+        // Determine tap coordinates inside the game area
         var rect = gameArea.getBoundingClientRect();
-        var x;
+        var clientX, clientY, x, y;
         if (e.changedTouches) {
-            x = e.changedTouches[0].clientX - rect.left;
+            clientX = e.changedTouches[0].clientX;
+            clientY = e.changedTouches[0].clientY;
         } else {
-            x = e.clientX - rect.left;
+            clientX = e.clientX;
+            clientY = e.clientY;
         }
+        x = clientX - rect.left;
+        y = clientY - rect.top;
+
+        // **NEW**: Ignore taps on the drum (character) — purely visual, not a tap target
+        if (characterEl && isTapOnDrum(clientX, clientY)) return;
+
+        // Determine which beat zone was tapped (8 zones across the width)
         var zoneWidth = rect.width / BEAT_SOUNDS.length;
         var tappedBeatIndex = Math.min(Math.floor(x / zoneWidth), BEAT_SOUNDS.length - 1);
 
@@ -297,6 +318,16 @@ document.addEventListener('DOMContentLoaded', function () {
             isChildTurn = false;
             checkMatch();
         }
+    }
+
+    /**
+     * Check if the given screen coordinates are within the drum character.
+     */
+    function isTapOnDrum(clientX, clientY) {
+        if (!characterEl) return false;
+        var drumRect = characterEl.getBoundingClientRect();
+        return clientX >= drumRect.left && clientX <= drumRect.right &&
+               clientY >= drumRect.top && clientY <= drumRect.bottom;
     }
 
     /**
@@ -319,9 +350,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 Sound.celebrate();
             }
 
-            // Mark all dots green (matched)
+            // Mark all dots green (matched) based on zone, not position
             for (var i = 0; i < pattern.length; i++) {
-                highlightDot(i, 'matched');
+                highlightDot(pattern[i], 'matched');
             }
 
             if (currentRound >= config.maxBeats) {
@@ -330,12 +361,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 showCelebration();
             }
         } else {
-            // Mismatch — mark wrong dots red, correct ones green
+            // Mismatch — mark wrong zone red, correct zone green
             for (var i = 0; i < pattern.length; i++) {
                 if (childTaps[i] !== pattern[i]) {
-                    highlightDot(i, 'mismatched');
+                    highlightDot(childTaps[i], 'mismatched');
                 } else {
-                    highlightDot(i, 'matched');
+                    highlightDot(pattern[i], 'matched');
                 }
             }
 
