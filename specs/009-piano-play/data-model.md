@@ -51,11 +51,13 @@ Tracks a currently-playing note for touch handling and cleanup.
 
 ### PianoKeyboard
 
-A fixed set of 12 keys forming one octave (C4–B4). Defined as a constant array in `piano.js`.
+A dynamic set of keys starting from C4 upward, computed at runtime based on screen width. Each white key is guaranteed ≥48dp. Maximum 22 white keys (3 octaves: C4–C6).
+
+The keyboard is built from a master list of 25 notes (C4 through C6). At init time, `computeKeyRange()` calculates how many white keys fit on screen and slices the master list accordingly.
 
 ```
-Keys (in pitch order):
-  C4   (white, 261.63 Hz)
+Master notes (C4–C6, 25 keys):
+  C4   (white, 261.63 Hz) → always included
   C#4  (black, 277.18 Hz)
   D4   (white, 293.66 Hz)
   D#4  (black, 311.13 Hz)
@@ -67,7 +69,25 @@ Keys (in pitch order):
   A4   (white, 440.00 Hz)
   A#4  (black, 466.16 Hz)
   B4   (white, 493.88 Hz)
+  C5   (white, 523.25 Hz)
+  C#5  (black, 554.37 Hz)
+  D5   (white, 587.33 Hz)
+  D#5  (black, 622.25 Hz)
+  E5   (white, 659.25 Hz)
+  F5   (white, 698.46 Hz)
+  F#5  (black, 739.99 Hz)
+  G5   (white, 783.99 Hz)
+  G#5  (black, 830.61 Hz)
+  A5   (white, 880.00 Hz)
+  A#5  (black, 932.33 Hz)
+  B5   (white, 987.77 Hz)
+  C6   (white, 1046.50 Hz) → included only if screen is wide enough
 ```
+
+**Example key counts by device:**
+- S22+ landscape (~800px): ~16 white keys (just over one octave, C4–E5)
+- iPad landscape (~1000px): 20 white keys (nearly 3 octaves, C4–B5)
+- Small phone landscape (~360px): 7 white keys (one octave, C4–B4)
 
 **No persistence**: Keyboard definition is hardcoded in the source code. No database, no localStorage.
 

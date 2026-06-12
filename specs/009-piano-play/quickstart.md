@@ -31,11 +31,11 @@ adb install app/android/app/build/outputs/apk/debug/app-debug.apk
 ### Test 1: Launch from Hub
 1. Open SproutPlay app
 2. Tap the "Piano Play" 🎹 card on the hub grid
-3. **Expected**: Piano app opens, landscape keyboard fills the screen, no errors in console
+3. **Expected**: Piano app opens, keyboard fills the screen with as many keys as fit at ≥48dp each (dynamic count), no errors in console
 
 ### Test 2: Play Single Notes
 1. Tap individual keys from left to right
-2. **Expected**: Each key plays a distinct note (C, D, E, F, G, A, B ascending)
+2. **Expected**: Each key plays a distinct note ascending from C4 upward (number of keys depends on screen width)
 3. **Expected**: Each key visually highlights (changes color) on press
 4. **Expected**: Note stops when finger is lifted
 
@@ -64,10 +64,10 @@ adb install app/android/app/build/outputs/apk/debug/app-debug.apk
 1. From the hub, tap "Piano Play" again
 2. **Expected**: Piano app opens cleanly (no duplicate audio contexts, no memory leaks)
 
-### Test 8: Portrait Mode Warning
-1. Rotate device to portrait orientation (if possible)
-2. **Expected**: A "Rotate your device" warning message is displayed
-3. **Expected**: No piano keyboard is visible in portrait
+### Test 8: Landscape Enforcement
+1. Open Piano Play in portrait orientation (if device doesn't auto-rotate)
+2. **Expected**: The piano keyboard fills the screen in landscape orientation via CSS rotation — no warning message, no prompt
+3. **Expected**: All keys are accessible and functional
 
 ### Test 9: Sound Toggle
 1. From the hub, go to Settings and disable sound
@@ -75,20 +75,21 @@ adb install app/android/app/build/outputs/apk/debug/app-debug.apk
 3. Tap keys
 4. **Expected**: Keys still show visual feedback (color change) but produce no audio
 
-### Test 10: Note Labels (if implemented)
-1. From Settings, enable note labels for piano
-2. Launch Piano Play
-3. **Expected**: Each key displays its letter name (C, D, E, F, G, A, B for white keys; C#, D#, etc. for black keys)
-4. Disable note labels in Settings, re-launch
-5. **Expected**: No text appears on keys
+### Test 10: Note Labels Toggle
+1. In the piano header, tap the 🔤 button (right side)
+2. **Expected**: Labels appear on all keys showing letter names (C, C#, D, etc.); button icon changes to 🏷️
+3. Tap the 🏷️ button again
+4. **Expected**: Labels disappear; button icon changes back to 🔤
+5. Close and re-launch the piano app
+6. **Expected**: Label state persists (remains on or off as last set)
 
 ## Known Limitations (MVP)
 
-- Only one octave (C4–B4). Two octaves deferred to future iteration.
+- Key count is dynamic: fills screen width with keys ≥48dp each (1–3 octaves depending on device).
 - No game modes (copy melody, free play only). Game mechanics are out of scope for MVP.
 - No recording or playback of played melodies.
 - No volume control slider — uses fixed volume (0.5 gain).
-- Portrait mode shows a warning; does not auto-rotate the device.
+- Portrait mode locks to landscape via Capacitor Screen Orientation plugin; no warning or prompt shown.
 
 ## Files Created/Modified
 

@@ -116,11 +116,11 @@ The task generation phase will break this down into executable tasks:
 
 1. **Scaffold**: Create `piano/index.html`, `css/piano.css`, `js/piano/piano.js`
 2. **Hub integration**: Register piano in `AppRegistry`, add entry card to hub grid
-3. **Keyboard layout**: Build CSS Grid piano keyboard with 7 white + 5 black keys
+3. **Keyboard layout**: Build responsive piano keyboard — dynamic key count computed from screen width (≥48dp per white key, 1–3 octaves), flex layout for white keys, absolute-positioned black keys with JS-calculated positions
 4. **Audio engine**: Implement Web Audio API note playback with triangle wave + decay envelope
 5. **Touch handling**: Wire up touchstart/touchend for key press/release with visual feedback
 6. **Visual feedback**: Key press animation (color change + subtle scale)
-7. **Landscape enforcement**: CSS `@media` rules for landscape-first layout, portrait warning
+7. **Landscape enforcement**: CSS `@media` rules for landscape-first layout, forced rotation via CSS transform in portrait mode (no warning overlay)
 8. **Multi-touch support**: Ensure simultaneous chord playback works
 9. **Note labels (P3)**: Optional letter name display on keys, toggle in settings
 10. **Back navigation**: Wire up back button to return to hub

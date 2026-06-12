@@ -62,19 +62,19 @@
 **Finding**: Piano keyboards are inherently landscape. Options:
 - Force landscape via CSS `@media (orientation: portrait)` warning screen
 - Auto-rotate via `screen.orientation.lock('landscape-primary')` (requires user gesture, Capacitor Screen Orientation plugin)
-- Responsive layout that works in both orientations (keys stack vertically in portrait — poor UX for piano)
+- Force landscape via CSS transform — rotate the entire container 90° in portrait mode
 
-**Decision**: Show a portrait-mode warning screen with a "Rotate your device" message. Do NOT force rotation via API (requires plugin, may not work on all devices). The warning screen approach is simpler and follows the offline-first, no-dependencies principle.
+**Decision**: Force landscape via CSS `@media (orientation: portrait)` — rotate `.app-container` 90° with a CSS transform so the keyboard fills the screen in landscape orientation regardless of device position. No warning overlay, no plugin needed. This is simpler and more kid-friendly than asking the child to rotate.
 
 ### 6. Note frequencies
 
 **Question**: Which notes to include? One octave or two?
 
-**Finding**: 
-- One octave (C4–B4, 12 keys: 7 white + 5 black) = each key gets ~8.3% of screen width in landscape. On a 720px-wide screen, each key is ~60px wide — above the 48dp minimum.
-- Two octaves (C4–B5, 25 keys) = each key gets ~4% of screen width. On 720px, each key is ~29px — below the 48dp minimum. Violates Constitution II.
+**Finding**:
+- Fixed key count (12 keys) wastes screen real estate on tablets and risks violating 48dp minimum on narrow phones.
+- Dynamic key count: compute how many white keys fit at ≥48dp each, starting from C4 upward.
 
-**Decision**: One octave (C4–B4). Standard 12-tone equal temperament frequencies. If screen width is very narrow (< 360px), keys scale down but the octave remains the same — children can still tap individual keys with a finger.
+**Decision**: Dynamic key range starting from C4. Compute `maxWhiteKeys = floor(screenWidth / 48)`, cap at 22 white keys (3 octaves). On an S22+ (~800px landscape) → ~16 white keys (just over one octave). On a 10" tablet (~1600px) → 22 white keys (3 octaves). This maximizes screen usage while respecting the Constitution's 48dp touch target rule.
 
 ## Unresolved Items
 

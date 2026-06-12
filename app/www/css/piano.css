@@ -23,6 +23,23 @@
   font-weight: 600;
 }
 
+/* Label toggle button */
+.label-toggle-btn {
+  position: static;
+  background: rgba(255,255,255,0.3);
+  color: var(--color-white);
+  border: 2px solid var(--color-white);
+  font-size: 20px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+}
+
+.label-toggle-btn:active {
+  background: rgba(255,255,255,0.5);
+}
+
 /* Override base.css position:absolute on .back-button for flex header */
 .piano-header .back-button {
   position: static;
@@ -83,14 +100,6 @@
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
 }
 
-/* Position each black key over the gap between white keys */
-/* White key = ~14.28% width (1/7). Black key centered on the gap. */
-.black-key[data-note="C#4"]  { left: calc(100% / 7 * 1 - 5%); }
-.black-key[data-note="D#4"]  { left: calc(100% / 7 * 2 - 5%); }
-.black-key[data-note="F#4"]  { left: calc(100% / 7 * 4 - 5%); }
-.black-key[data-note="G#4"]  { left: calc(100% / 7 * 5 - 5%); }
-.black-key[data-note="A#4"]  { left: calc(100% / 7 * 6 - 5%); }
-
 .black-key.active {
   background-color: var(--piano-black-key-active);
   transform: scaleY(0.98);
@@ -116,55 +125,16 @@
   display: flex;
 }
 
-/* ===== Portrait warning ===== */
-.portrait-warning {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent-4));
-  z-index: 9999;
-  align-items: center;
-  justify-content: center;
-}
-
-.portrait-warning-content {
-  text-align: center;
-  color: var(--color-white);
-}
-
-.portrait-emoji {
-  font-size: 80px;
-  margin-bottom: var(--spacing-md);
-}
-
-.portrait-warning-content p {
-  font-size: var(--font-size-xlarge);
-  font-weight: 600;
-}
-
-/* Show portrait warning when device is in portrait mode */
-@media (orientation: portrait) {
-  .piano-keyboard {
-    display: none !important;
-  }
-
-  .portrait-warning {
-    display: flex !important;
-  }
-}
-
 /* ===== Color-key mapping (T018) ===== */
-/* Assign distinct bright colors to each white key via data-note selectors */
-.white-key[data-note="C4"]   { border-bottom: 6px solid var(--color-primary); }
-.white-key[data-note="D4"]   { border-bottom: 6px solid var(--color-accent-1); }
-.white-key[data-note="E4"]   { border-bottom: 6px solid var(--color-secondary); }
-.white-key[data-note="F4"]   { border-bottom: 6px solid var(--color-accent-2); }
-.white-key[data-note="G4"]   { border-bottom: 6px solid var(--color-accent-4); }
-.white-key[data-note="A4"]   { border-bottom: 6px solid var(--color-accent-3); }
-.white-key[data-note="B4"]   { border-bottom: 6px solid var(--color-primary); }
+/* Assign distinct bright colors to each white key via :nth-child */
+/* Colors cycle through the palette as keys increase */
+.white-key:nth-child(7n+1) { border-bottom: 6px solid var(--color-primary); }
+.white-key:nth-child(7n+2) { border-bottom: 6px solid var(--color-accent-1); }
+.white-key:nth-child(7n+3) { border-bottom: 6px solid var(--color-secondary); }
+.white-key:nth-child(7n+4) { border-bottom: 6px solid var(--color-accent-2); }
+.white-key:nth-child(7n+5) { border-bottom: 6px solid var(--color-accent-4); }
+.white-key:nth-child(7n+6) { border-bottom: 6px solid var(--color-accent-3); }
+.white-key:nth-child(7n+7) { border-bottom: 6px solid var(--color-primary); }
 
 /* ===== Key press animation (T013) ===== */
 @keyframes keyPress {

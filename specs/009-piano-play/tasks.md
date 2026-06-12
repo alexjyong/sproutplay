@@ -44,7 +44,7 @@ description: "Task list for Piano Play mini-app implementation"
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
 - [x] T003 Register piano in `app/www/js/registry.js` — add `register({ id: 'piano', name: 'Piano Play', icon: '🎹', description: 'Tap the keys and make music!', backgroundColor: 'color-4', placeholder: false, path: 'piano/index.html' })` to `AppRegistry.init()`
-- [x] T004 Create `app/www/css/piano.css` — CSS variables for piano colors (`--piano-white-key`, `--piano-white-key-active`, `--piano-black-key`, `--piano-black-key-active`), portrait warning screen styles (`@media (orientation: portrait)`), keyboard container with `touch-action: none` and flex layout, base key styles (white keys as flex items, black keys positioned with absolute + `left: calc()`), header and back button overrides (position:static for flex header), color-key mapping, key press animation
+- [x] T004 Create `app/www/css/piano.css` — CSS variables for piano colors (`--piano-white-key`, `--piano-white-key-active`, `--piano-black-key`, `--piano-black-key-active`), forced landscape rotation via `@media (orientation: portrait)` (rotates `.app-container` 90° with CSS transform, no warning overlay), keyboard container with `touch-action: none` and flex layout, base key styles (white keys as flex items, black keys positioned with absolute + `left: calc()`), header and back button overrides (position:static for flex header), color-key mapping, key press animation
 
 **Checkpoint**: Foundation ready — the piano can be launched from the hub, displays a keyboard layout (even if non-functional), and can navigate back. User story implementation can now begin.
 
@@ -58,12 +58,12 @@ description: "Task list for Piano Play mini-app implementation"
 
 ### Implementation for User Story 1
 
-- [x] T006 [P] [US1] Define piano key data in `app/www/js/piano/piano.js` — constant array of 12 keys (C4–B4) with note name, frequency in Hz, isBlack flag, whiteKeyIndex, and label; follows data-model.md Key entity
+- [x] T006 [P] [US1] Define piano key data in `app/www/js/piano/piano.js` — dynamic key range computed from screen width (min 48dp per white key, up to 3 octaves / 22 white keys); starts from C4; follows data-model.md Key entity
 - [x] T007 [US1] Implement `PianoAudio` module in `app/www/js/piano/piano.js` — IIFE singleton with `init()` (creates AudioContext), `playNote(frequency)` (creates oscillator+gain, triangle wave, exponential decay envelope), `stopNote(oscillator, gainNode)` (gain ramp to 0 over 300ms, stop after 350ms), active notes tracking via `Map`; follows research.md polyphony decision
-- [x] T008 [US1] Implement keyboard rendering in `app/www/js/piano/piano.js` — function that builds the DOM for 7 white keys + 5 black keys using flex layout with absolute-positioned black keys; calls from `Piano.init()`
+- [x] T008 [US1] Implement keyboard rendering in `app/www/js/piano/piano.js` — function that builds DOM for N white keys + M black keys based on screen width; black keys positioned dynamically via JS `style.left` calc; calls from `Piano.init()`
 - [x] T009 [US1] Wire touch handling in `app/www/js/piano/piano.js` — attach `touchstart`/`touchend` listeners to each key element; `touchstart` calls `PianoAudio.playNote()` and adds active CSS class; `touchend` calls `PianoAudio.stopNote()` and removes active class; `preventDefault()` on keyboard container
 - [x] T010 [US1] Wire back button in `app/www/piano/index.html` — `#piano-back` button calls `miniAppBack.goBack()` on click; matches existing pattern in `memory/index.html`
-- [x] T011 [US1] Add portrait warning overlay in `app/www/piano/index.html` — hidden by default, shown via CSS `@media (orientation: portrait)` with "Rotate your device" message; keyboard container hidden in portrait
+- [x] T011 [US1] Use Capacitor Screen Orientation plugin to lock landscape orientation — `@capawesome/capacitor-screen-orientation` v8.0.1, called in `Piano.init()` with platform check; replaces CSS transform approach
 
 **Checkpoint**: At this point, User Story 1 is fully functional. A child can launch the piano from the hub, tap keys and hear notes, play chords, and navigate back. Test against quickstart.md Tests 1–7.
 
@@ -94,8 +94,8 @@ description: "Task list for Piano Play mini-app implementation"
 ### Implementation for User Story 3
 
 - [x] T015 [P] [US3] Add note label text elements in keyboard rendering in `app/www/js/piano/piano.js` — each key element contains a `<span class="key-label">` with the letter name (e.g., "C", "C#", "D"); label is hidden by default via CSS (`display: none`); shown only when a `data-labels="true"` attribute is set on the keyboard container
-- [x] T016 [US3] Add label toggle CSS in `app/www/css/piano.css` — `.key-label { display: none; }` by default; `.piano-keyboard[data-labels="true"] .key-label { display: flex; }` when labels enabled; label text uses `--font-size-base`, high-contrast color, centered in key
-- [x] T017 [US3] Add label toggle logic in `app/www/js/piano/piano.js` — on init, check if a settings flag exists (`localStorage.getItem('piano_showLabels')`); if true, set `keyboardContainer.setAttribute('data-labels', 'true')`; future: connect to Settings screen toggle
+- [x] T016 [US3] Add label toggle CSS in `app/www/css/piano.css` — `.key-label { display: none; }` by default; `.piano-keyboard[data-labels="true"] .key-label { display: flex; }` when labels enabled; label text uses `--font-size-base`, high-contrast color, centered in key; `.label-toggle-btn` styled as a header button
+- [x] T017 [US3] Add label toggle logic in `app/www/js/piano/piano.js` — header button `#label-toggle` toggles labels on/off; persists state to `localStorage('piano_showLabels')`; icon switches between 🔤 (hidden) and 🏷️ (visible)
 
 **Checkpoint**: All user stories are complete. Piano supports free play, visual feedback, and optional note labels. Test against quickstart.md Tests 1–10.
 
