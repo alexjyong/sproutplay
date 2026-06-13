@@ -154,6 +154,13 @@ const Piano = (function () {
 
     // ── Keyboard rendering ───────────────────────────────────────
     function renderKeyboard() {
+        // Skip re-render if nothing changed (prevents flicker on resize)
+        var minWidth = 48;
+        var availableWidth = window.innerWidth;
+        var newMaxWhiteKeys = Math.min(Math.floor(availableWidth / minWidth), 22);
+        if (currentKeys._maxWhiteKeys === newMaxWhiteKeys) return;
+        currentKeys._maxWhiteKeys = newMaxWhiteKeys;
+
         keyboardEl.innerHTML = '';
 
         // Compute keys based on current screen width
@@ -242,6 +249,9 @@ const Piano = (function () {
             bk.style.left = (whiteKeyPct * col - whiteKeyPct * 0.5) + '%';
             bk.style.width = (whiteKeyPct * 0.7) + '%';
         }
+
+        // Show keyboard after keys are rendered (hides flicker on load)
+        keyboardEl.classList.add('ready');
     }
 
     // ── Touch handling ────────────────────────────────────────────
@@ -338,11 +348,16 @@ const Piano = (function () {
         }
     }
 
-    // ── Navigation ────────────────────────────────────────────────
-    function goToHub() {
+    // ── Exit (used by UI back button AND hardware back button) ────
+    function exit() {
         PianoAudio.destroy();
         unlockOrientation();
         window.location.href = '../index.html';
+    }
+
+    // ── Navigation ────────────────────────────────────────────────
+    function goToHub() {
+        exit();
     }
 
     // ── Init ──────────────────────────────────────────────────────
@@ -354,6 +369,16 @@ const Piano = (function () {
         if (backBtn) backBtn.addEventListener('click', goToHub);
         if (labelToggleBtn) {
             labelToggleBtn.addEventListener('click', toggleLabels);
+        }
+
+        // Register Capacitor hardware back button (overrides mini-app-back.js)
+        if (window.Capacitor && window.Capacitor.getPlatform() === 'android') {
+            var AppPlugin = window.Capacitor?.Plugins?.App;
+            if (AppPlugin && typeof AppPlugin.addListener === 'function') {
+                AppPlugin.addListener('backButton', function () {
+                    exit();
+                });
+            }
         }
 
         // Lock orientation to landscape (Capacitor plugin)
